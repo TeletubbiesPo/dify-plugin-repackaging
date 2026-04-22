@@ -20,6 +20,10 @@ on:
         required: true
         default: "false"
 
+# 强制所有 Actions 使用 Node.js 24 ✅ 消除警告
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   repackage:
     runs-on: ubuntu-latest
@@ -42,10 +46,10 @@ jobs:
           fi
 
       - name: Checkout repository
-        uses: actions/checkout@v4  # 已支持 Node.js 24
+        uses: actions/checkout@v4
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5  # 已支持 Node.js 24
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -75,7 +79,7 @@ jobs:
           echo "ARTIFACT_NAME=$(basename "$ARTIFACT_PATH")" >> $GITHUB_ENV
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4  # 已支持 Node.js 24
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.ARTIFACT_PATH }}
