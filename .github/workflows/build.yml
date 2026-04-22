@@ -20,7 +20,7 @@ on:
         required: true
         default: "false"
 env:
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true        
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true       
 jobs:
   repackage:
     runs-on: ubuntu-latest
