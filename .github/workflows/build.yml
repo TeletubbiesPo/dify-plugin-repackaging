@@ -19,8 +19,7 @@ on:
         description: "Use ARM platform (true = manylinux_2_17_aarch64, false = manylinux_2_17_x86_64)"
         required: true
         default: "false"
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true       
+
 jobs:
   repackage:
     runs-on: ubuntu-latest
@@ -43,10 +42,10 @@ jobs:
           fi
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4  # 已支持 Node.js 24
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5  # 已支持 Node.js 24
         with:
           python-version: "3.12"
 
@@ -60,9 +59,9 @@ jobs:
           -p ${{ env.PIP_PLATFORM }} \
           -s ${{ env.PACKAGE_SUFFIX }} \
           market \
-          "${{ github.event.inputs.plugin_author }}" \
-          "${{ github.event.inputs.plugin_name }}" \
-          "${{ github.event.inputs.plugin_version }}"
+          "${{ inputs.plugin_author }}" \
+          "${{ inputs.plugin_name }}" \
+          "${{ inputs.plugin_version }}"
 
       - name: Find repackaged artifact
         run: |
@@ -76,7 +75,7 @@ jobs:
           echo "ARTIFACT_NAME=$(basename "$ARTIFACT_PATH")" >> $GITHUB_ENV
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4  # 已支持 Node.js 24
         with:
           name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.ARTIFACT_PATH }}
