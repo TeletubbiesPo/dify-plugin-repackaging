@@ -20,10 +20,6 @@ on:
         required: true
         default: "false"
 
-# 强制使用 Node.js 24，彻底消除弃用警告
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   repackage:
     runs-on: ubuntu-latest
@@ -45,13 +41,11 @@ jobs:
             echo "PACKAGE_SUFFIX=offline" >> "$GITHUB_ENV"
           fi
 
-      # 最新版，支持 Node.js 24
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      # 最新版，支持 Node.js 24
       - name: Set up Python 3.12
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -65,9 +59,9 @@ jobs:
           -p ${{ env.PIP_PLATFORM }} \
           -s ${{ env.PACKAGE_SUFFIX }} \
           market \
-          "${{ inputs.plugin_author }}" \
-          "${{ inputs.plugin_name }}" \
-          "${{ inputs.plugin_version }}"
+          "${{ github.event.inputs.plugin_author }}" \
+          "${{ github.event.inputs.plugin_name }}" \
+          "${{ github.event.inputs.plugin_version }}"
 
       - name: Find repackaged artifact
         run: |
@@ -80,7 +74,6 @@ jobs:
           echo "ARTIFACT_PATH=$ARTIFACT_PATH" >> $GITHUB_ENV
           echo "ARTIFACT_NAME=$(basename "$ARTIFACT_PATH")" >> $GITHUB_ENV
 
-      # 最新版，支持 Node.js 24
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
